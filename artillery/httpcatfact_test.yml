@@ -1,0 +1,36 @@
+config:
+  target: 'https://cat-fact.herokuapp.com'
+  phases:
+    - duration: 6
+      arrivalRate: 2
+
+scenarios:
+  - flow:
+      - get:
+          url: '/facts/random'
+      - post:
+          url: '/facts'
+          json:
+            # Przykładowe dane do przesłania w żądaniu POST
+            text: '{{ payload.text }}'  # Wstawianie tekstu z pliku payload.json
+            type: '{{ payload.type }}'  # Wstawianie typu z pliku payload.json
+            user: '{{ payload.user }}'  # Wstawianie użytkownika z pliku payload.json
+          expect:
+            # Oczekiwane odpowiedzi z API
+            - statusCode: 200  
+            - json: 'status'  
+            - contentType: 'application/json'  
+payload:
+  path: './payload.json'
+
+# Sekcja dla wyników
+metrics:
+  - name: 'latency'  # Nazwa metryki
+    # Poniżej definicja metryki latency (czas odpowiedzi)
+    threshold: 'p95<=500'  # Ograniczenie czasu odpowiedzi do 95 percentyla <= 500 ms
+  - name: 'http_req_duration'  # Nazwa metryki
+    # Poniżej definicja metryki http_req_duration (całkowity czas wykonania żądania)
+    threshold: 'p95<=600'  # Ograniczenie całkowitego czasu wykonania do 95 percentyla <= 600 ms
+  - name: 'http_req_failed'  # Nazwa metryki
+    # Poniżej definicja metryki http_req_failed (liczba nieudanych żądań)
+    threshold: 'rate<=0.1'  # Ograniczenie częstości nieudanych żądań do <= 10%
