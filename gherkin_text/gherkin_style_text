@@ -37,3 +37,4 @@ Feature: Wyszukiwanie i zakup produktu w sklepie internetowym
     Then użytkownik widzi komunikat "Dziękujemy za zakup"
     And użytkownik otrzymuje e-mail potwierdzający zakup
     And zakupiony produkt "dokładna nazwa produktu" jest wymieniony w e-mailu potwierdzającym
+    
