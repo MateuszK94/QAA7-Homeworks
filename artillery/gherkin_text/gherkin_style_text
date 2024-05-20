@@ -1,0 +1,39 @@
+Proces wyszukiwania i zakupu produktu
+
+
+Feature: Wyszukiwanie i zakup produktu w sklepie internetowym
+
+  Scenario: Wyszukiwanie produktu
+    Given użytkownik jest na stronie głównej sklepu internetowego
+    When użytkownik wpisuje "nazwa produktu" w pole wyszukiwania
+    And klika przycisk "Szukaj"
+    Then użytkownik widzi listę wyników zawierających "nazwa produktu"
+
+  Scenario: Wybór produktu
+    Given użytkownik jest na stronie wyników wyszukiwania dla "nazwa produktu"
+    When użytkownik klika na produkt o nazwie "dokładna nazwa produktu"
+    Then użytkownik jest na stronie szczegółów produktu "dokładna nazwa produktu"
+    And użytkownik widzi przycisk "Dodaj do koszyka"
+
+  Scenario: Dodanie produktu do koszyka
+    Given użytkownik jest na stronie szczegółów produktu "dokładna nazwa produktu"
+    When użytkownik klika przycisk "Dodaj do koszyka"
+    Then produkt "dokładna nazwa produktu" jest dodany do koszyka
+    And użytkownik widzi komunikat "Produkt został dodany do koszyka"
+
+  Scenario: Przejście do koszyka i weryfikacja zawartości
+    Given użytkownik dodał produkt "dokładna nazwa produktu" do koszyka
+    When użytkownik klika ikonę koszyka
+    Then użytkownik jest na stronie koszyka
+    And użytkownik widzi produkt "dokładna nazwa produktu" w koszyku
+    And użytkownik widzi całkowitą cenę produktu
+
+  Scenario: Zakup produktu
+    Given użytkownik jest na stronie koszyka
+    When użytkownik klika przycisk "Przejdź do kasy"
+    And użytkownik wypełnia formularz z danymi dostawy
+    And użytkownik wybiera metodę płatności
+    And użytkownik klika przycisk "Kup teraz"
+    Then użytkownik widzi komunikat "Dziękujemy za zakup"
+    And użytkownik otrzymuje e-mail potwierdzający zakup
+    And zakupiony produkt "dokładna nazwa produktu" jest wymieniony w e-mailu potwierdzającym
